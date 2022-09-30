@@ -26,8 +26,7 @@ export const cartas = palosExistentes
         if (numero === 'A') {
           valor.push(1);
           valor.push(11);
-        }
-        if (numero === 'Q' || numero === 'J' || numero === 'K') {
+        } else {
           valor.push(10);
         }
       } else {
@@ -37,7 +36,7 @@ export const cartas = palosExistentes
       return {
         numOLetra: numero,
         palo: palo,
-        estado: EstadoCartaEnum.EN_JUEGO,
+        estado: EstadoCartaEnum.EN_MAZO,
         valor: valor,
         url: `../../assets/${palo.toLowerCase()}_${numero.toLowerCase()}.png`,
       };

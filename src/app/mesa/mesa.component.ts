@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Carta, cartas } from '../interfaces/carta';
+import { Carta } from '../interfaces/carta';
 
 @Component({
   selector: 'app-mesa',
@@ -7,12 +7,9 @@ import { Carta, cartas } from '../interfaces/carta';
   styleUrls: ['./mesa.component.css'],
 })
 export class MesaComponent implements OnInit {
-  mazo: Carta[] = cartas;
   constructor() {}
 
-  ngOnInit(): void {
-    console.log(cartas.map((c) => c.url));
-  }
+  ngOnInit(): void {}
 
   capitalize(text: string) {
     return `${text.charAt(0).toUpperCase()}${text.substring(1)}`;
