@@ -9,6 +9,7 @@ import { Carta } from '../interfaces/carta';
 })
 export class MesaComponent implements OnInit {
   cartas: Carta[] = [];
+  nombreJugador: string = 'Leonel';
   constructor(public cartaService: CartaService) {}
 
   ngOnInit(): void {}
