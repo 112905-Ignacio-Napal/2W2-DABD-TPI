@@ -21,16 +21,16 @@ const palosExistentes = Object.values(PaloEnum);
 export const cartas = palosExistentes
   .map((palo) => {
     return numerosExistentes.map((numero) => {
-      let valor: number[] = [];
+      let valor: number = 0;
       if (isNaN(Number.parseInt(numero))) {
         if (numero === 'A') {
-          valor.push(1);
-          valor.push(11);
+          valor = 11;
+
         } else {
-          valor.push(10);
+          valor = 10;
         }
       } else {
-        valor.push(Number.parseInt(numero));
+        valor = Number.parseInt(numero);
       }
 
       return {

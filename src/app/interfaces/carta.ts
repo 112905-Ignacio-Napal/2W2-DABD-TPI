@@ -2,7 +2,7 @@ export interface Carta {
   numOLetra: string;
   palo: PaloEnum;
   estado: EstadoCartaEnum;
-  valor: number[];
+  valor: number;
   url: string;
 }
 export enum PaloEnum {

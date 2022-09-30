@@ -1,6 +1,7 @@
 import { CartaService } from './../services/carta/carta.service';
 import { Component, OnInit } from '@angular/core';
 import { Carta } from '../interfaces/carta';
+import { Jugador } from '../classes/jugador';
 
 @Component({
   selector: 'app-mesa',
@@ -8,9 +9,13 @@ import { Carta } from '../interfaces/carta';
   styleUrls: ['./mesa.component.css'],
 })
 export class MesaComponent implements OnInit {
-  cartas: Carta[] = [];
-  nombreJugador: string = 'Leonel';
-  constructor(public cartaService: CartaService) {}
+  juegoEnCurso: boolean = false;
+  cartasCroupier: Carta[] = [];
+  jugador: Jugador = new Jugador();
+
+  constructor(public cartaService: CartaService) {
+    this.jugador.nombre = 'Lionel "El 10" Messi';
+  }
 
   ngOnInit(): void {}
 
@@ -18,7 +23,21 @@ export class MesaComponent implements OnInit {
     return `${text.charAt(0).toUpperCase()}${text.substring(1)}`;
   }
 
-  pedirCarta() {
-    this.cartas.push(this.cartaService.getCarta());
+  iniciarJuego() {
+    this.juegoEnCurso = true;
+    this.pedirCartaJugador();
+    this.pedirCartaJugador();
+  }
+
+  pedirCartaJugador() {
+    const cartaObtenida = this.cartaService.getCarta();
+    this.jugador.cartas.push(cartaObtenida);
+  }
+  sumarCartas(): number {
+    let resultado = 0;
+
+    this.jugador.cartas.forEach((carta) => (resultado += carta.valor));
+
+    return resultado;
   }
 }
