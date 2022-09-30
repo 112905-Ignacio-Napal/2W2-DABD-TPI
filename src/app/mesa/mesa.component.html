@@ -8,11 +8,15 @@
                 src="../../assets/mazo.png" alt="mazo">
         </div>
     </div>
-    <div class="flex justify-center gap-16">
-        <div id="jugador" class="h-44 w-fit">
-            <img class="drop-shadow-2xl h-full w-full" src="../../assets/player.png" alt="mazo">
-        </div>
-        <div id="cartas" class="h-44 w-fit flex gap-4">
+    <div class="flex flex-col gap-4 sm:flex sm:flex-row sm:gap-6 sm:w-full sm:justify-start">
+        <button (click)="pedirCarta()" class="p-4 rounded h-2/4 bg-red-900 text-white">Pedir Carta</button>
+        <div class="flex justify-center gap-16">
+            <div id="jugador" class="hidden sm:block h-44 w-fit">
+                <img class="drop-shadow-2xl h-full w-full" src="../../assets/player.png" alt="mazo">
+            </div>
+            <div id="cartas" class="h-44 w-fit flex gap-4">
+                <app-carta *ngFor="let carta of cartas"></app-carta>
+            </div>
         </div>
     </div>
 </div>

@@ -1,3 +1,4 @@
+import { CartaService } from './../services/carta/carta.service';
 import { Component, OnInit } from '@angular/core';
 import { Carta } from '../interfaces/carta';
 
@@ -7,11 +8,16 @@ import { Carta } from '../interfaces/carta';
   styleUrls: ['./mesa.component.css'],
 })
 export class MesaComponent implements OnInit {
-  constructor() {}
+  cartas: Carta[] = [];
+  constructor(public cartaService: CartaService) {}
 
   ngOnInit(): void {}
 
   capitalize(text: string) {
     return `${text.charAt(0).toUpperCase()}${text.substring(1)}`;
+  }
+
+  pedirCarta() {
+    this.cartas.push(this.cartaService.getCarta());
   }
 }
