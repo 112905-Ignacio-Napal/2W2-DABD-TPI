@@ -9,6 +9,7 @@ export class CartaService {
   constructor() {}
 
   getCarta(): Carta {
-    return cartas[0];
+    const randomCard = Math.floor(Math.random() * 52);
+    return cartas[randomCard];
   }
 }

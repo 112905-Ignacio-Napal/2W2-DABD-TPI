@@ -15,7 +15,7 @@
                 <img class="drop-shadow-2xl h-full w-full" src="../../assets/player.png" alt="mazo">
             </div>
             <div id="cartas" class="h-44 w-fit flex gap-4">
-                <app-carta *ngFor="let carta of cartas"></app-carta>
+                <app-carta *ngFor="let carta of cartas" [carta]="carta"></app-carta>
             </div>
         </div>
     </div>
