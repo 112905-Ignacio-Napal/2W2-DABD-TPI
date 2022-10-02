@@ -1,4 +1,4 @@
-import { PaloEnum, EstadoCartaEnum } from '../interfaces/carta';
+import { PaloEnum } from '../interfaces/carta';
 
 const numerosExistentes = [
   '2',
@@ -24,8 +24,7 @@ export const cartas = palosExistentes
       let valor: number = 0;
       if (isNaN(Number.parseInt(numero))) {
         if (numero === 'A') {
-          valor = 11;
-
+          valor = 1;
         } else {
           valor = 10;
         }
@@ -36,9 +35,8 @@ export const cartas = palosExistentes
       return {
         numOLetra: numero,
         palo: palo,
-        estado: EstadoCartaEnum.EN_MAZO,
         valor: valor,
-        url: `../../assets/${palo.toLowerCase()}_${numero.toLowerCase()}.png`,
+        url: `../../assets/${palo.toLowerCase()}_${numero.toLocaleLowerCase()}.png`,
       };
     });
   })

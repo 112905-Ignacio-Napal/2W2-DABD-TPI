@@ -7,15 +7,13 @@ import { Carta } from 'src/app/interfaces/carta';
 })
 export class CartaService {
   cartasEnMazo: Carta[] = [...cartas];
-
-
   constructor() {}
 
   getCarta(): Carta {
-    
-    const randomNumber = Math.floor(Math.random() * 52);
-    this.cartasEnMazo.splice(randomNumber,1);
-    
-    return cartas[randomNumber];
+    const cantCartas = this.cartasEnMazo.length;
+    const randomNumber: number = Math.floor(Math.random() * cantCartas);
+    const randomCard: Carta = this.cartasEnMazo[randomNumber];
+    this.cartasEnMazo.splice(randomNumber, 1);
+    return randomCard;
   }
 }
