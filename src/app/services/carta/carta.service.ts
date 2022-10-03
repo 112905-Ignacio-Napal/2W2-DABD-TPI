@@ -6,7 +6,7 @@ import { Carta } from 'src/app/interfaces/carta';
   providedIn: 'root',
 })
 export class CartaService {
-  cartasEnMazo: Carta[] = [...cartas];
+  private cartasEnMazo: Carta[] = [...cartas];
   constructor() {}
 
   getCarta(): Carta {
@@ -15,5 +15,9 @@ export class CartaService {
     const randomCard: Carta = this.cartasEnMazo[randomNumber];
     this.cartasEnMazo.splice(randomNumber, 1);
     return randomCard;
+  }
+
+  reiniciarJuego() {
+    this.cartasEnMazo = [...cartas];
   }
 }

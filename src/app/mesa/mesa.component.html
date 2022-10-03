@@ -1,33 +1,33 @@
-<div class="bg-green-800 min-h-screen flex flex-col items-center justify-around w-screen p-4">
-    <div class="flex gap-16 justify-start">
-        <div id="croupier" class="h-56 w-fit">
-            <img class="drop-shadow-2xl h-full w-full" src="../../assets/croupier.png" alt="mazo">
-        </div>
-        <div class="h-28 w-fit">
-            <img class="hover:animate-pulse hover:shadow-gray-900 h-full w-full rounded-lg object-cover shadow-2xl shadow-gray-600"
-                src="../../assets/mazo.png" alt="mazo">
-        </div>
-        <div id="cartas" class="h-44 w-fit flex gap-4">
-            <app-carta *ngFor="let carta of croupier.cartas" [carta]="carta"></app-carta>
+<div class="bg-green-800 min-h-screen flex flex-col items-center justify-around w-screen gap-4 p-4">
+    <div class="grid grid-cols-2 sm:flex  gap-4 h-fit sticky top-0" id="botones">
+        <button class="hover:bg-red-800 p-4 rounded disabled:bg-gray-500 bg-red-900 text-white"
+            (click)="comenzarNuevoJuego()">Nuevo Juego</button>
+        <button class="hover:bg-red-800 p-4 rounded disabled:bg-gray-500 bg-red-900 text-white" [disabled]="yaRepartio"
+            (click)="repartir()">Repartir</button>
+        <button class="hover:bg-red-800 p-4 rounded disabled:bg-gray-500 bg-red-900 text-white"
+            [disabled]="!(yaRepartio && juegoEnCurso)" (click)="pedirCartaJugador()">Pedir
+            Carta</button>
+        <button class="hover:bg-red-800 p-4 rounded disabled:bg-gray-500 bg-red-900 text-white"
+            [disabled]="!(yaRepartio && juegoEnCurso)" (click)="plantarse()">Plantarse</button>
+    </div>
+    <div class="flex flex-col gap-4" id="croupier">
+        <p class="text-white">Puntaje Croupier: {{croupier.puntajeMano}}</p>
+        <div id="cartasCroupier" class="flex gap-4 flex-wrap">
+            <app-carta [carta]="carta" *ngFor="let carta of croupier.cartas"></app-carta>
         </div>
     </div>
-    <div class="flex flex-col gap-4 sm:flex sm:flex-row sm:gap-6 sm:w-full sm:justify-start">
-        <button (click)="iniciarJuego()"
-            class="hover:bg-red-800 p-4 rounded disabled:bg-gray-500  h-2/4 bg-red-900 text-white"
-            [disabled]="juegoEnCurso">Iniciar juego</button>
-        <button (click)="pedirCartaJugador()"
-            class="hover:bg-red-800 p-4 rounded disabled:bg-gray-500  h-2/4 bg-red-900 text-white"
-            [disabled]="!juegoEnCurso">Pedir
-            Carta</button>
-        <button class="hover:bg-red-800 p-4 rounded disabled:bg-gray-500  h-2/4 bg-red-900 text-white"
-            [disabled]="!(jugador.cartas.length >= 2 && juegoEnCurso)" (click)="plantarse()">Plantarse</button>
-        <div class="flex justify-center gap-16">
-            <div id="jugador" class="hidden  h-44 w-fit gap-4 sm:flex sm:flex-col">
-                <p class="text-center">{{jugador.nombre}}</p> <span>Puntaje: {{jugador.puntajeMano}}</span>
-                <img class="drop-shadow-2xl h-full w-full" src="../../assets/player.png" alt="mazo">
+    <div class="flex w-full flex-col sm:flex-row sm:justify-evenly gap-4 mt-4" id="jugador">
+        <div class="flex justify-center sm:justify-around">
+            <img class="object-contain h-32 hidden sm:block" src="../../assets/player.png" alt="">
+            <div>
+                <p class="text-white">Puntaje Jugador: {{jugador.puntajeMano}}</p>
+                <p class="text-white">Nombre: {{jugador.nombre}}</p>
             </div>
-            <div id="cartas" class="h-44 w-fit flex flex-wrap gap-4">
-                <app-carta *ngFor="let carta of jugador.cartas" [carta]="carta"></app-carta>
+        </div>
+        <div id="cartasJugador" class="flex-col gap-4 flex-wrap sm:justify-around">
+            <p class="text-white text-center">Cartas jugador</p>
+            <div class="flex gap-4">
+                <app-carta [carta]="carta" *ngFor="let carta of jugador.cartas"></app-carta>
             </div>
         </div>
     </div>
