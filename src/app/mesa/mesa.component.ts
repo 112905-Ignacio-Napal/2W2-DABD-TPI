@@ -14,7 +14,7 @@ import { Historial } from '../classes/historial';
 export class MesaComponent implements OnInit {
   jugador: Jugador = new Jugador();
   croupier: Croupier = new Croupier();
-  resultado: ResultadoEnum = ResultadoEnum.EMPATE;
+  resultado: ResultadoEnum = ResultadoEnum.NULO;
   juegoEnCurso: boolean = false;
   yaRepartio: boolean = false;
 
@@ -42,7 +42,7 @@ export class MesaComponent implements OnInit {
     this.jugador.puntajeMano = 0;
     this.croupier.cartas = [];
     this.croupier.puntajeMano = 0;
-    this.resultado = ResultadoEnum.EMPATE;
+    this.resultado = ResultadoEnum.NULO;
     this.juegoEnCurso = true;
     this.yaRepartio = false;
   }
@@ -53,15 +53,18 @@ export class MesaComponent implements OnInit {
     this.pedirCartaCroupier();
     this.pedirCartaJugador();
     this.pedirCartaCroupier();
-    this.ocultarCarta(this.croupier.cartas[1]);
-    this.yaRepartio = true;
+    this.validarManoJugador();
+    if (this.resultado === ResultadoEnum.NULO) this.yaRepartio = true;
   }
 
   pedirCartaJugador() {
     this.jugador.cartas.push(this.cartaService.getCarta());
-    if (this.jugador.cartas.length > 1) {
+    if (this.jugador.cartas.length > 2) {
       this.validarManoJugador();
     }
+    this.jugador.cartas.forEach((carta) => {
+      carta.url = `../../assets/${carta.palo.toLowerCase()}_${carta.numOLetra.toLocaleLowerCase()}.png`;
+    });
   }
 
   pedirCartaCroupier() {
@@ -69,6 +72,9 @@ export class MesaComponent implements OnInit {
     this.croupier.cartas.push(carta);
     if (this.croupier.cartas.length === 1) {
       this.actualizarPuntajeCroupier();
+    }
+    if (this.croupier.cartas.length === 2) {
+      this.ocultarCartaCroupier();
     }
   }
 
@@ -167,6 +173,7 @@ export class MesaComponent implements OnInit {
 
   finalizarJuego() {
     this.juegoEnCurso = false;
+    this.yaRepartio = false;
     if (this.resultado === ResultadoEnum.EMPATE) {
       this.empate();
     }
@@ -177,11 +184,11 @@ export class MesaComponent implements OnInit {
       this.derrotaJugador();
     }
     alert(this.resultado);
-    this.yaRepartio = false;
   }
 
-  ocultarCarta(carta: Carta) {
-    carta.url = '../../assets/dada_vuelta.png';
+  ocultarCartaCroupier() {
+    this.croupier.cartas[1].url = '../../assets/dada_vuelta.png';
+    this.revelarCarta(this.croupier.cartas[0]);
   }
 
   revelarCarta(carta: Carta) {
