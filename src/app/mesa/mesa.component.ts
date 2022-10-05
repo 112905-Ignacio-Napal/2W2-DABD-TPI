@@ -1,4 +1,4 @@
-import { ResultadoEnum } from './../interfaces/ResultadoEnum';
+import { ResultadoEnum } from './../interfaces/resultadoEnum';
 import { Croupier } from '../classes/croupier';
 import { CartaService } from './../services/carta/carta.service';
 import { Component, OnInit } from '@angular/core';
@@ -12,6 +12,7 @@ import { Historial } from '../classes/historial';
   styleUrls: ['./mesa.component.css'],
 })
 export class MesaComponent implements OnInit {
+  primeraCarga: boolean = true;
   jugador: Jugador = new Jugador();
   croupier: Croupier = new Croupier();
   resultado: ResultadoEnum = ResultadoEnum.NULO;
@@ -19,18 +20,30 @@ export class MesaComponent implements OnInit {
   yaRepartio: boolean = false;
 
   constructor(public cartaService: CartaService) {
-    this.jugador.nombre = 'Lionel Messi';
-  }
-
-  ngOnInit(): void {
     this.comenzarNuevoJuego();
   }
 
-  capitalize(text: string) {
-    return `${text.charAt(0).toUpperCase()}${text.substring(1)}`;
+  ngOnInit(): void {}
+
+  obtenerNombreJugador() {
+    let nombre: any = '';
+    while (nombre === '') {
+      if (this.primeraCarga)
+        nombre =
+          prompt('Ingrese su nombre para comenzar una nueva partida') || '';
+      else {
+        nombre = prompt('Ingrese su nombre para comenzar una nueva partida');
+      }
+    }
+    if (nombre != null) {
+      this.jugador.nombre = nombre;
+    }
+    this.primeraCarga = false;
+    return nombre;
   }
 
   comenzarNuevoJuego() {
+    if (this.obtenerNombreJugador() === null) return;
     this.jugador.historial = new Historial();
     this.croupier.historial = new Historial();
     this.comenzarNuevaMano();
@@ -162,6 +175,9 @@ export class MesaComponent implements OnInit {
         this.resultado = ResultadoEnum.VICORIA_CROUPIER;
       } else if (this.tieneBlackJack(this.jugador.cartas)) {
         this.resultado = ResultadoEnum.VICTORIA_JUGADOR;
+      } else {
+        //2 puntajes iguales
+        this.resultado = ResultadoEnum.EMPATE;
       }
     }
   }

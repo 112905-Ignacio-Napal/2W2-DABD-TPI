@@ -10,25 +10,25 @@
         <button class="hover:bg-red-800 p-4 rounded disabled:bg-gray-500 bg-red-900 text-white"
             [disabled]="!(yaRepartio && juegoEnCurso)" (click)="plantarse()">Plantarse</button>
     </div>
-    <div class="flex flex-col gap-4" id="croupier">
-        <p class="text-white">Puntaje Croupier: {{croupier.puntajeMano}}</p>
-        <div id="cartasCroupier" class="flex gap-4 flex-wrap">
+    <div class="flex w-full flex-col sm:flex-row sm:justify-evenly gap-4 mt-4" id="croupier">
+        <div class="flex justify-center sm:justify-around">
+            <img class="object-contain h-32 hidden sm:block" src="../../assets/croupier.png" alt="imagenCroupier">
+            <p class="text-white">Puntaje Croupier: {{croupier.puntajeMano}}</p>
+        </div>
+        <div id="cartasCroupier" class="flex gap-4 flex-wrap justify-around">
             <app-carta [carta]="carta" *ngFor="let carta of croupier.cartas"></app-carta>
         </div>
     </div>
     <div class="flex w-full flex-col sm:flex-row sm:justify-evenly gap-4 mt-4" id="jugador">
         <div class="flex justify-center sm:justify-around">
-            <img class="object-contain h-32 hidden sm:block" src="../../assets/player.png" alt="">
+            <img class="object-contain h-32 hidden sm:block" src="../../assets/player.png" alt="fotoJugador">
             <div>
-                <p class="text-white">Puntaje Jugador: {{jugador.puntajeMano}}</p>
-                <p class="text-white">Nombre: {{jugador.nombre}}</p>
+                <p class="text-white">Jugador: {{jugador.nombre}}</p>
+                <p class="text-white">Puntos: {{jugador.puntajeMano}}</p>
             </div>
         </div>
-        <div id="cartasJugador" class="flex-col gap-4 flex-wrap sm:justify-around">
-            <p class="text-white text-center">Cartas jugador</p>
-            <div class="flex gap-4">
-                <app-carta [carta]="carta" *ngFor="let carta of jugador.cartas"></app-carta>
-            </div>
+        <div id="cartasJugador" class="flex gap-4 flex-wrap justify-around">
+            <app-carta [carta]="carta" *ngFor="let carta of jugador.cartas"></app-carta>
         </div>
     </div>
 </div>
