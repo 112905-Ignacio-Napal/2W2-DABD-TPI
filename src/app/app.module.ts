@@ -7,16 +7,9 @@ import { MesaComponent } from './mesa/mesa.component';
 import { CartaComponent } from './carta/carta.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    MesaComponent,
-    CartaComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
+  declarations: [AppComponent, MesaComponent, CartaComponent, CartaComponent],
+  imports: [BrowserModule, AppRoutingModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

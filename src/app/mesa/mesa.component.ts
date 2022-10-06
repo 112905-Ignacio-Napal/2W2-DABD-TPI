@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { Carta } from '../interfaces/carta';
 import { Jugador } from '../classes/jugador';
 import { Historial } from '../classes/historial';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-mesa',
@@ -25,14 +26,37 @@ export class MesaComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  obtenerNombreJugador() {
+  async obtenerNombreJugador() {
     let nombre: any = '';
     while (nombre === '') {
       if (this.primeraCarga)
-        nombre =
-          prompt('Ingrese su nombre para comenzar una nueva partida') || '';
+        await Swal.fire({
+          title: 'Nueva partida',
+          text: 'Ingrese su nombre para comenzar',
+          input: 'text',
+          icon: 'question',
+          confirmButtonText: 'Aceptar',
+          confirmButtonColor: 'green',
+          inputValidator: (value) => (!value ? 'Ingresa un nombre' : null),
+          allowEscapeKey: false,
+          allowOutsideClick: false,
+        }).then((r) => (nombre = r.value || ''));
+      // nombre =
+      //   prompt('Ingrese su nombre para comenzar una nueva partida') || '';
       else {
-        nombre = prompt('Ingrese su nombre para comenzar una nueva partida');
+        await Swal.fire({
+          title: 'Nueva partida',
+          text: 'Ingrese su nombre para comenzar',
+          input: 'text',
+          icon: 'question',
+          confirmButtonText: 'Aceptar',
+          confirmButtonColor: 'green',
+          showCancelButton: true,
+          cancelButtonColor: 'red',
+          inputValidator: (value) => (!value ? 'Ingresa un nombre' : null),
+          allowEscapeKey: false,
+          allowOutsideClick: false,
+        }).then((r) => (nombre = r.value));
       }
     }
     if (nombre != null) {
@@ -42,8 +66,8 @@ export class MesaComponent implements OnInit {
     return nombre;
   }
 
-  comenzarNuevoJuego() {
-    if (this.obtenerNombreJugador() === null) return;
+  async comenzarNuevoJuego() {
+    if ((await this.obtenerNombreJugador()) === null) return;
     this.jugador.historial = new Historial();
     this.croupier.historial = new Historial();
     this.comenzarNuevaMano();
@@ -60,20 +84,20 @@ export class MesaComponent implements OnInit {
     this.yaRepartio = false;
   }
 
-  repartir() {
+  async repartir() {
     this.comenzarNuevaMano();
-    this.pedirCartaJugador();
+    await this.pedirCartaJugador();
     this.pedirCartaCroupier();
-    this.pedirCartaJugador();
+    await this.pedirCartaJugador();
     this.pedirCartaCroupier();
-    this.validarManoJugador();
+    await this.validarManoJugador();
     if (this.resultado === ResultadoEnum.NULO) this.yaRepartio = true;
   }
 
-  pedirCartaJugador() {
+  async pedirCartaJugador() {
     this.jugador.cartas.push(this.cartaService.getCarta());
     if (this.jugador.cartas.length > 2) {
-      this.validarManoJugador();
+      await this.validarManoJugador();
     }
     this.jugador.cartas.forEach((carta) => {
       carta.url = `../../assets/${carta.palo.toLowerCase()}_${carta.numOLetra.toLocaleLowerCase()}.png`;
@@ -122,7 +146,7 @@ export class MesaComponent implements OnInit {
     this.croupier.historial.empates++;
   }
 
-  validarManoJugador() {
+  async validarManoJugador() {
     this.jugador.puntajeMano = this.sumarCartas(this.jugador.cartas);
 
     if (this.jugador.puntajeMano === 21) {
@@ -135,7 +159,7 @@ export class MesaComponent implements OnInit {
       this.revelarCarta(this.croupier.cartas[1]);
       this.actualizarPuntajeCroupier();
       this.derrotaJugador();
-      this.finalizarJuego();
+      await this.finalizarJuego();
     }
   }
 
@@ -187,7 +211,7 @@ export class MesaComponent implements OnInit {
     this.finalizarJuego();
   }
 
-  finalizarJuego() {
+  async finalizarJuego() {
     this.juegoEnCurso = false;
     this.yaRepartio = false;
     if (this.resultado === ResultadoEnum.EMPATE) {
@@ -199,7 +223,15 @@ export class MesaComponent implements OnInit {
     if (this.resultado === ResultadoEnum.VICORIA_CROUPIER) {
       this.derrotaJugador();
     }
-    alert(this.resultado);
+    await Swal.fire({
+      title: this.resultado,
+      icon:
+        this.resultado === ResultadoEnum.VICORIA_CROUPIER ? 'error' : 'success',
+      confirmButtonText: 'Ok',
+      confirmButtonColor: 'green',
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+    });
   }
 
   ocultarCartaCroupier() {
