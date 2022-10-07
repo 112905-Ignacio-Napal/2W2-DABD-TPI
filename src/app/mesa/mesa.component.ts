@@ -56,7 +56,7 @@ export class MesaComponent implements OnInit {
           inputValidator: (value) => (!value ? 'Ingresa un nombre' : null),
           allowEscapeKey: false,
           allowOutsideClick: false,
-        }).then((r) => (nombre = r.value));
+        }).then((r) => (nombre = r.value || null));
       }
     }
     if (nombre != null) {
