@@ -1,10 +1,10 @@
-package TPI.Back;
+package com.adbd.Back;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class BackApplicationTests {
+class TpiDabdApplicationTests {
 
 	@Test
 	void contextLoads() {

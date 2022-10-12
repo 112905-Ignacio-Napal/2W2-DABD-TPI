@@ -8,11 +8,11 @@
 		<version>2.7.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>TPI</groupId>
+	<groupId>com.adbd</groupId>
 	<artifactId>Back</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Back</name>
-	<description>BlackJack API for DABD</description>
+	<name>TPI DABD</name>
+	<description>API para TPI de DABD UNT FRC</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -24,10 +24,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.session</groupId>
-			<artifactId>spring-session-core</artifactId>
 		</dependency>
 
 		<dependency>
