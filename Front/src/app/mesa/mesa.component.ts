@@ -6,6 +6,7 @@ import { Carta } from '../interfaces/carta';
 import { Jugador } from '../classes/jugador';
 import { Historial } from '../classes/historial';
 import Swal from 'sweetalert2';
+import { inserts } from '../constants/baraja';
 
 @Component({
   selector: 'app-mesa',
@@ -22,6 +23,7 @@ export class MesaComponent implements OnInit {
 
   constructor(public cartaService: CartaService) {
     this.comenzarNuevoJuego();
+    console.log(inserts);
   }
 
   ngOnInit(): void {}
@@ -100,7 +102,7 @@ export class MesaComponent implements OnInit {
       await this.validarManoJugador();
     }
     this.jugador.cartas.forEach((carta) => {
-      carta.url = `../../assets/${carta.palo.toLowerCase()}_${carta.numOLetra.toLocaleLowerCase()}.png`;
+      carta.url = `../../assets/${carta.palo.toLowerCase()}_${carta.simbolo.toLocaleLowerCase()}.png`;
     });
   }
 
@@ -126,7 +128,7 @@ export class MesaComponent implements OnInit {
   }
 
   tieneAs(cartas: Carta[]) {
-    return Boolean(cartas.find((carta) => carta.numOLetra === 'A'));
+    return Boolean(cartas.find((carta) => carta.simbolo === 'A'));
   }
 
   tieneBlackJack(cartas: Carta[]) {
@@ -240,6 +242,6 @@ export class MesaComponent implements OnInit {
   }
 
   revelarCarta(carta: Carta) {
-    carta.url = `../../assets/${carta.palo}_${carta.numOLetra}.png`;
+    carta.url = `../../assets/${carta.palo}_${carta.simbolo}.png`;
   }
 }

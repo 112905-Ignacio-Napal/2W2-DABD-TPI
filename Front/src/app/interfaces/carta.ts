@@ -1,5 +1,5 @@
 export interface Carta {
-  numOLetra: string;
+  simbolo: string;
   palo: PaloEnum;
   valor: number;
   url: string;

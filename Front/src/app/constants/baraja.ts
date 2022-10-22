@@ -33,7 +33,7 @@ export const cartas = palosExistentes
       }
 
       return {
-        numOLetra: numero,
+        simbolo: numero,
         palo: palo,
         valor: valor,
         url: `../../assets/${palo.toLowerCase()}_${numero.toLocaleLowerCase()}.png`,
@@ -41,3 +41,9 @@ export const cartas = palosExistentes
     });
   })
   .flat(1);
+
+export const inserts = cartas
+  .map(
+    (c) => `('${c.simbolo}','${c.palo.toUpperCase()}','${c.valor}','${c.url}')`
+  )
+  .toString();
