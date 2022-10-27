@@ -1,11 +1,10 @@
-package com.adbd.Back.dao;
+package com.adbd.Back.repository;
 
 import com.adbd.Back.model.Carta;
-import com.adbd.Back.model.Partida;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface IPartidaDao extends JpaRepository<Partida,Long> {
+public interface ICartaRepository extends JpaRepository<Carta,Long> {
 
 }

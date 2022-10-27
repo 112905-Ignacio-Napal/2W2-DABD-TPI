@@ -1,10 +1,7 @@
 package com.adbd.Back.model;
 
 import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -15,6 +12,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Jugador {
 
     @Id
@@ -25,7 +23,10 @@ public class Jugador {
     private String password;
 
     @NotNull
-    private String nombreUsuario;
+    private String username;
 
-
+    @NotNull
+    @OneToMany
+    @JoinColumn(name = "id_jugador")
+    private List<Partida> partidas;
 }

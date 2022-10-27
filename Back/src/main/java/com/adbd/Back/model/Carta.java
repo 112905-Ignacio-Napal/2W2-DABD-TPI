@@ -1,12 +1,8 @@
 package com.adbd.Back.model;
 
-import com.adbd.Back.enums.EstadoCartaEnum;
 import com.adbd.Back.enums.PaloEnum;
 import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -16,6 +12,7 @@ import javax.persistence.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Carta {
 
     @Id
@@ -36,6 +33,5 @@ public class Carta {
     private String url;
 
     @NotNull
-    @Enumerated(value = EnumType.STRING)
-    private EstadoCartaEnum estado;
+    private boolean cartaJugador;
 }

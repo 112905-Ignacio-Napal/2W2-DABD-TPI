@@ -1,11 +1,7 @@
 package com.adbd.Back.model;
 
 import com.adbd.Back.enums.ResultadoEnum;
-import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -16,37 +12,20 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Partida {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "id_jugador")
     private Jugador jugador;
 
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "id_croupier")
-    private Croupier croupier;
+    @OneToMany(mappedBy = "partidas")
+    @JoinColumn(name = "id_partida",referencedColumnName = "id")
+    private List<Carta> manos;
 
-    @ManyToMany
-    @JoinColumn(name = "id")
-    private List<Carta> cartasCroupier;
-
-    @ManyToMany
-    @JoinColumn(name = "id")
-    private List<Carta> cartasJugador;
-
-    @ManyToMany
-    @JoinColumn(name = "id")
-    private List<Carta> cartas;
-
-    @NotNull
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     private ResultadoEnum resultado;
-
-
 }
