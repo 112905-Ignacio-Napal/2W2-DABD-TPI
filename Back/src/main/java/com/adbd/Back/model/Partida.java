@@ -22,7 +22,7 @@ public class Partida {
     @JoinColumn(name = "id_jugador")
     private Jugador jugador;
 
-    @OneToMany(mappedBy = "partidas")
+    @ManyToMany
     @JoinColumn(name = "id_partida",referencedColumnName = "id")
     private List<Carta> manos;
 
