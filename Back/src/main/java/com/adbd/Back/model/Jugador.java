@@ -22,11 +22,10 @@ public class Jugador {
     private Long id;
 
     @NotNull
-    private String nombre;
-
-    @NotNull
     private String password;
 
-    @OneToMany(mappedBy = "jugador",cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Partida> partidas;
+    @NotNull
+    private String nombreUsuario;
+
+
 }
