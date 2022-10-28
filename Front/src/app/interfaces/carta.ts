@@ -3,6 +3,7 @@ export interface Carta {
   palo: PaloEnum;
   valor: number;
   url: string;
+  cartaJugador: boolean;
 }
 export enum PaloEnum {
   CORAZON = 'corazon',
