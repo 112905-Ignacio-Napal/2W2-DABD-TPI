@@ -1,12 +1,15 @@
 package com.adbd.Back.controller;
 
 import com.adbd.Back.model.Carta;
+import com.adbd.Back.model.Jugador;
 import com.adbd.Back.model.Partida;
 import com.adbd.Back.service.PartidaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/partida")
@@ -17,24 +20,29 @@ public class PartidaController {
     PartidaService partidaService;
 
     @GetMapping("/getCarta")
-    public ResponseEntity<Carta> getCarta(){
-        return new ResponseEntity<>(partidaService.getCarta(),HttpStatus.OK);
+    public ResponseEntity<Carta> getCarta(@RequestParam Long id, @RequestParam boolean tipoJugador){
+        return new ResponseEntity<>(partidaService.getCarta(id,tipoJugador),HttpStatus.OK);
     }
 
-    @GetMapping("/comenzar")
-    public ResponseEntity<Long> comenzarPartida(@RequestParam Partida partida){
-        return new ResponseEntity<>(partidaService.comenzarPartida(partida),HttpStatus.OK);
+    //YA ESTA
+    @GetMapping ("/comenzar")
+    public ResponseEntity<Long> comenzarPartida(@RequestParam Long id){
+        return new ResponseEntity<>(partidaService.comenzarPartida(id),HttpStatus.OK);
     }
 
-    @PostMapping("/jugador/getMano")
-    public ResponseEntity<Boolean> getManoJugadorByPartida(@RequestParam Long idPartida){
-        partidaService.getManoJugadorByPartida(idPartida);
-        return new ResponseEntity<>(true,HttpStatus.OK);
+
+    @GetMapping("/plantarse")
+    @ResponseBody
+    //ResponseEntity<Optional<Factura>>
+    public ResponseEntity<Optional<Partida>> plantarse(@RequestParam Long id){
+        var result = partidaService.plantarse(id);
+
+        if (result != null)
+            return ResponseEntity.ok(result);
+        else
+            return ResponseEntity.notFound().build();
+
     }
 
-    @PostMapping("/croupier/getMano")
-    public ResponseEntity<Boolean> getManoCroupiertByPartida(@RequestParam Long idPartida){
-        partidaService.getManoCroupiertByPartida(idPartida);
-        return new ResponseEntity<>(true,HttpStatus.OK);
-    }
+
 }

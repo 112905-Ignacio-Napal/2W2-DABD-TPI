@@ -18,13 +18,15 @@ public class Partida {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "id_jugador")
+
+    @ManyToOne(targetEntity = Jugador.class)
+    //@JoinColumn(name = "id_jugador", referencedColumnName = "id")
     private Jugador jugador;
+
 
     @ManyToMany
     @JoinColumn(name = "id_partida",referencedColumnName = "id")
-    private List<Carta> manos;
+    private List<Carta> cartas;
 
     @Enumerated(EnumType.STRING)
     private ResultadoEnum resultado;

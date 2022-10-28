@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IPartidaDao extends JpaRepository<Partida,Long> {
 
+
+
 }
