@@ -2,9 +2,6 @@ import { ResultadoEnum } from './../interfaces/resultadoEnum';
 import { Croupier } from '../classes/croupier';
 import { CartaService } from './../services/carta/carta.service';
 import { Component, OnInit } from '@angular/core';
-import { Carta } from '../interfaces/carta';
-import { Jugador } from '../classes/jugador';
-import { Historial } from '../classes/historial';
 import Swal from 'sweetalert2';
 import { inserts } from '../constants/baraja';
 
