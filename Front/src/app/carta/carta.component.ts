@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Carta } from '../interfaces/carta';
-
+import { Carta } from '../interfaces/Carta';
 @Component({
   selector: 'app-carta',
   templateUrl: './carta.component.html',
