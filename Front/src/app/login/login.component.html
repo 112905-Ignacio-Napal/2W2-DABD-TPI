@@ -1,4 +1,4 @@
-<div class="flex flex-col h-screen bg-green-700 gap-40 items-center justify-center">
+<div class="flex flex-col min-h-screen bg-green-700 gap-10 items-center justify-center">
     <h1 class="text-center mt-8 text-6xl font-bold">Blackjack</h1>
     <form [formGroup]="formLogin" class="md:w-2/6 w-full p-4 gap-4 flex flex-col">
         <div class="w-full flex flex-col gap-2">
@@ -24,9 +24,11 @@
                 es obligatoria</p>
         </div>
         <div class="w-full  flex flex-col md:flex  gap-4 md:gap-2">
-            <button (click)="iniciar()" class="rounded-md bg-green-900 text-white py-2 px-4 w-full"
+            <button [disabled]="formLogin.invalid" (click)="iniciar()"
+                class="disabled:bg-gray-700 disabled:cursor-not-allowed rounded-md bg-green-900 text-white py-2 px-4 w-full"
                 type="button">Ingresar</button>
-            <button (click)="registrar()" class="rounded-md bg-red-900 text-white py-2 px-4 w-full"
+            <button [disabled]="formLogin.invalid" (click)="registrar()"
+                class="disabled:bg-gray-700 disabled:cursor-not-allowed rounded-md bg-red-900 text-white py-2 px-4 w-full"
                 type="button">Registrarse</button>
         </div>
     </form>

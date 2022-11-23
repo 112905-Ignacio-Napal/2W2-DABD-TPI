@@ -10,10 +10,10 @@ import com.adbd.Back.repository.ICartaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 public class PartidaService {
@@ -27,48 +27,24 @@ public class PartidaService {
     @Autowired
     IJugadorDao jugadorDao;
 
-
-    private List<Carta> mazo = new ArrayList<>();
-
-    public Carta getCarta(Long idPartida, boolean tipoJugador) {
-
-        //ESTO NO SE SI ESTA BIEN!!!!
-        mazo = getAllCartas();
-
-        //obtenemos la partida
+    public Carta getCarta(Long idPartida, boolean isJugador) {
+        List<Carta> mazo = getAllCartas();
         Optional<Partida> partida = partidaDao.findById(idPartida);
 
-        //obtenemos las cartas de la partida
-        List<Carta> cartas = partida.get().getCartas();
+        List<Carta> cartasEnJuego = partida.get().getCartas();
+        mazo.removeAll(cartasEnJuego);
 
-
-        //generamos un numero random
         Random random = new Random();
+        Carta carta = mazo.get(random.nextInt(0, mazo.size() - 1));
 
-        //obtenemos una carta del mazo con el numero al azar
-        Carta carta = mazo.get(random.nextInt(0, mazo.size()));
-
-        //quitamos la carta del mazo
-        mazo.remove(carta);
-
-
-        //agregamos la carta a la lista de cartas y seteamos si el que obtuvo la carta es un jugador (true) o un croupier (false)
-        if (tipoJugador) {
+        if (isJugador) {
             carta.setCartaJugador(true);
-            cartas.add(carta);
         } else {
             carta.setCartaJugador(false);
-            cartas.add(carta);
         }
 
-
-        //seteamos las cartas a las cartas de la partida
-        partida.get().setCartas(cartas);
-
-        //guardamos los cambios
+        cartasEnJuego.add(carta);
         partidaDao.save(partida.get());
-
-
         return carta;
     }
 
@@ -76,79 +52,70 @@ public class PartidaService {
         return cartaDao.findAll();
     }
 
-    public Long comenzarPartida(Long idJugador) {
-
-        //ESTO NO SE SI ESTÀ BIEN, TAMBIEN LO PUSE EL METODO GETCARTA
-        mazo = getAllCartas();
-
-        //Obtenemos el jugador
+    public Partida comenzarPartida(Long idJugador) {
         Optional<Jugador> jugador = jugadorDao.findById(idJugador);
 
-        //asociamos el jugador a la partida
         Partida partida = new Partida();
-        if (jugador.isPresent())
+        if (jugador.isPresent()){
             partida.setJugador(jugador.get());
+        }
         partidaDao.save(partida);
-
-        //retornamos el id de la partida con el que el front se comunicara con el back
-        return partida.getId();
+        return partida;
     }
 
 
     public Optional<Partida> plantarse(Long idPartida) {
         Optional<Partida> partida = partidaDao.findById(idPartida);
+        if(obtenerPuntaje(partida.get().getId(), true) > 21){
+            partida.get().setResultado(validarResultado(idPartida));
+            return partida;
+        }
+
         Long puntajeCroupier = obtenerPuntaje(idPartida, false);
 
-        //le damos las cartas que le faltan al croupier cuando el jugador se planta (No se si esta bien la logica)
-        while (puntajeCroupier <= 21){
+        while (puntajeCroupier < 17){
             getCarta(idPartida,false);
             puntajeCroupier = obtenerPuntaje(idPartida,false);
         }
-
-        partida.get().setResultado(validarPuntaje(idPartida));
-
-            if (!partida.isPresent()) {
-                return null;
-            }
+        partida.get().setResultado(validarResultado(idPartida));
         return partida;
     }
 
-
-    //Con este metodo obtengo EL PUNTAJE actual de la partida del jugador que le pase como parametro
-    private Long obtenerPuntaje(Long idPartida, boolean tipoJugador) {
+    private Long obtenerPuntaje(Long idPartida, boolean isJugador) {
         Optional<Partida> partida = partidaDao.findById(idPartida);
-        Long puntajeJugador = 0L;
-        Long puntajeCroupier = 0L;
+        Long puntaje = 0L;
 
-        //obtenemos las cartas de la partida
         List<Carta> cartas = partida.get().getCartas();
 
-        for (Carta carta : cartas) {
-            if (carta.isCartaJugador()) {
-                puntajeJugador += carta.getValor();
-            } else {
-                puntajeCroupier += carta.getValor();
+        if(isJugador){
+            for (Carta carta : cartas.stream().filter(c -> c.isCartaJugador()).collect(Collectors.toList())) {
+                puntaje+= carta.getValor();
+                if(carta.getSimbolo().equalsIgnoreCase("A") && puntaje + 10 <= 21){
+                    puntaje += 10L;
+                }
             }
-
+        }else{
+            for (Carta carta : cartas.stream().filter(c -> !c.isCartaJugador()).collect(Collectors.toList())) {
+                puntaje+= carta.getValor();
+                if(carta.getSimbolo().equalsIgnoreCase("A") && puntaje + 10 <= 21){
+                    puntaje += 10L;
+                }
+            }
         }
 
-        if (tipoJugador) return puntajeJugador;
-        else return puntajeCroupier;
+        return puntaje;
     }
 
-
-
-    //VALIDAR LA LOGICA DE ESTE METODO
-    private ResultadoEnum validarPuntaje(Long idPartida) {
+    private ResultadoEnum validarResultado(Long idPartida) {
         Optional<Partida> partida = partidaDao.findById(idPartida);
 
         Long puntajeJugador = obtenerPuntaje(idPartida,true);
         Long puntajeCroupier = obtenerPuntaje(idPartida,false);
 
-        if (puntajeJugador <= 21 && puntajeJugador > puntajeCroupier) {
+        if (puntajeJugador <= 21 && puntajeJugador > puntajeCroupier || puntajeCroupier > 21) {
             return ResultadoEnum.VICTORIA_JUGADOR;
         }
-        if (puntajeJugador > 21 && puntajeCroupier <= 21){
+        if (puntajeCroupier <= 21 && puntajeCroupier > puntajeJugador || puntajeJugador > 21){
             return ResultadoEnum.VICTORIA_CROUPIER;
         }
         else{

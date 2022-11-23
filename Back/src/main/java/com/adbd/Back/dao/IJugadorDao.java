@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IJugadorDao  extends JpaRepository<Jugador,Long> {
-    boolean existsByUsername(Jugador jugador);
+    boolean existsByUsername(String username);
+    Jugador findJugadorByUsernameEqualsAndPasswordEquals(String username,String password);
 }

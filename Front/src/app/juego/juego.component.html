@@ -1,0 +1,35 @@
+<div class="bg-green-800 w-full h-full min-h-screen flex flex-col justify-around items-center">
+    <div id="botones"
+        class="flex gap-4 w-full h-fit place-content-center mt-4 px-4 flex-wrap md:static md:top-auto sticky top-4">
+        <button (click)="iniciarPartida()"
+            class="disabled:bg-gray-700 disabled:cursor-not-allowed px-4 py-2 bg-red-900 rounded-md text-white font-semibold">Nueva
+            Partida</button>
+        <button [disabled]="partida.resultado" (click)="pedirCarta(true)"
+            class="disabled:bg-gray-700 disabled:cursor-not-allowed px-4 py-2 bg-red-900 rounded-md text-white font-semibold">Pedir
+            carta</button>
+        <button [disabled]="partida.resultado" (click)="plantarse()"
+            class="disabled:bg-gray-700 disabled:cursor-not-allowed px-4 py-2 bg-red-900 rounded-md text-white font-semibold">Plantarse</button>
+        <button (click)="salir()"
+            class="disabled:bg-gray-700 disabled:cursor-not-allowed px-4 py-2 bg-red-900 rounded-md text-white font-semibold">Salir</button>
+    </div>
+    <div class="w-full flex flex-col md:gap-16 mt-4 md:mt-0">
+        <div id="croupier" class="flex flex-col gap-4 w-full px-4">
+            <div class="text-center text-white">
+                <h4 class="font-bold text-red-300">Croupier</h4>
+                <p class="font-semibold">{{partida.puntosCroupier? 'Puntos ': ''}}{{partida.puntosCroupier}}</p>
+            </div>
+            <div class="flex gap-4 w-full flex-wrap place-content-center">
+                <app-carta *ngFor="let carta of croupier.cartas" [carta]="carta"></app-carta>
+            </div>
+        </div>
+        <div id="croupier" class="flex flex-col gap-4 w-full px-4">
+            <div class="text-center text-white">
+                <h4 class="font-bold text-blue-300">{{jugador.username | titlecase}}</h4>
+                <p class="font-semibold">{{partida.puntosJugador? 'Puntos ': ''}}{{partida.puntosJugador}}</p>
+            </div>
+            <div class="flex gap-4 w-full flex-wrap place-content-center">
+                <app-carta *ngFor="let carta of jugador.cartas" [carta]="carta"></app-carta>
+            </div>
+        </div>
+    </div>
+</div>

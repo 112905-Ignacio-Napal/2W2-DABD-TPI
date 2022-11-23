@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment.prod';
   providedIn: 'root',
 })
 export class UserService {
-  AUTH_URL_BASE = `${environment.URL_BASE_API}/api/auth`;
+  AUTH_URL_BASE = `${environment.URL_BASE_API}`;
   constructor(private http: HttpClient) {}
 
   registrar(jugador: Jugador): Observable<Jugador> {

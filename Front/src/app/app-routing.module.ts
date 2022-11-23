@@ -1,10 +1,20 @@
+import { JuegoComponent } from './juego/juego.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
+import { AuthGuardService } from './auth-guard.service';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'login' },
-  { path: 'login', component: LoginComponent },
+  {
+    path: '',
+    canActivate: [AuthGuardService],
+    children: [
+      { path: '', pathMatch: 'full', redirectTo: 'login' },
+      { path: 'login', component: LoginComponent },
+      { path: 'juego', component: JuegoComponent },
+      { path: '**', redirectTo: 'login', pathMatch: 'full' },
+    ],
+  },
 ];
 
 @NgModule({

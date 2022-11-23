@@ -6,9 +6,11 @@ export interface Partida {
   jugador: Jugador;
   cartas: Carta[];
   resultado: ResultadoEnum;
+  puntosJugador: number;
+  puntosCroupier: number;
 }
 export enum ResultadoEnum {
-  VICTORIA_JUGADOR = 'Victoria Jugador',
-  VICTORIA_CROUPIER = 'Victoria Croupier',
-  EMPATE = 'Empate',
+  VICTORIA_JUGADOR = 'VICTORIA_JUGADOR',
+  VICTORIA_CROUPIER = 'VICTORIA_CROUPIER',
+  EMPATE = 'EMPATE',
 }

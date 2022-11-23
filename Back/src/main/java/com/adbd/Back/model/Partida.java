@@ -20,7 +20,7 @@ public class Partida {
 
 
     @ManyToOne(targetEntity = Jugador.class)
-    //@JoinColumn(name = "id_jugador", referencedColumnName = "id")
+    @JoinColumn(name = "id_jugador", referencedColumnName = "id")
     private Jugador jugador;
 
 

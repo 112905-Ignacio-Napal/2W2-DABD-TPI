@@ -15,6 +15,10 @@ public class LoginService {
     }
 
     public boolean validarUsuarioExistente(Jugador jugador) {
-        return jugadorDao.existsByUsername(jugador);
+        return jugadorDao.existsByUsername(jugador.getUsername());
+    }
+
+    public Jugador validarCredenciales(Jugador jugador) {
+        return jugadorDao.findJugadorByUsernameEqualsAndPasswordEquals(jugador.getUsername(), jugador.getPassword());
     }
 }
