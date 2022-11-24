@@ -10,6 +10,7 @@ import { LoginComponent } from './login/login.component';
 import { JuegoComponent } from './juego/juego.component';
 import { AuthGuardService } from './auth-guard.service';
 import { TitleCasePipe } from '@angular/common';
+import { FormatResultadoPipe } from './pipes/format-resultado.pipe';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { TitleCasePipe } from '@angular/common';
     CartaComponent,
     LoginComponent,
     JuegoComponent,
+    FormatResultadoPipe,
   ],
   imports: [
     BrowserModule,
@@ -25,7 +27,7 @@ import { TitleCasePipe } from '@angular/common';
     HttpClientModule,
     ReactiveFormsModule,
   ],
-  providers: [AuthGuardService, TitleCasePipe],
+  providers: [AuthGuardService, TitleCasePipe, FormatResultadoPipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

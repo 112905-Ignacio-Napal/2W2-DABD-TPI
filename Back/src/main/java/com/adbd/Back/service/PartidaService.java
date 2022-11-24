@@ -68,6 +68,7 @@ public class PartidaService {
         Optional<Partida> partida = partidaDao.findById(idPartida);
         if(obtenerPuntaje(partida.get().getId(), true) > 21){
             partida.get().setResultado(validarResultado(idPartida));
+            partidaDao.save(partida.get());
             return partida;
         }
 
@@ -78,6 +79,8 @@ public class PartidaService {
             puntajeCroupier = obtenerPuntaje(idPartida,false);
         }
         partida.get().setResultado(validarResultado(idPartida));
+        partidaDao.save(partida.get());
+
         return partida;
     }
 
@@ -121,5 +124,9 @@ public class PartidaService {
         else{
             return ResultadoEnum.EMPATE;
         }
+    }
+
+    public Partida getPartidaEnCurso(Long idJugador){
+        return partidaDao.findTopByJugador_IdOrderByIdDesc(idJugador);
     }
 }

@@ -29,4 +29,10 @@ export class PartidaService {
       params: { idPartida: idPartida },
     }) as Observable<Partida>;
   }
+
+  getPartidaEnCurso(idJugador: number): Observable<Partida> {
+    return this.http.get(`${this.URL_API}/getPartidaEnCurso`, {
+      params: { idJugador: idJugador },
+    }) as Observable<Partida>;
+  }
 }

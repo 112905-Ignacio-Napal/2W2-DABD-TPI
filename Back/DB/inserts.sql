@@ -1,5 +1,5 @@
-drop schema blackjack;
-create schema blackjack;
+-- drop schema blackjack;
+-- create schema blackjack;
 use blackjack;
 insert into cartas(
 carta_jugador,

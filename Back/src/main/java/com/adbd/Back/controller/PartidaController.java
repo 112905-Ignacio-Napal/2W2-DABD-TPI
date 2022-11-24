@@ -29,7 +29,6 @@ public class PartidaController {
         return new ResponseEntity<>(partidaService.comenzarPartida(idJugador),HttpStatus.OK);
     }
 
-
     @GetMapping("/plantarse")
     @ResponseBody
     public ResponseEntity<Optional<Partida>> plantarse(@RequestParam Long idPartida){
@@ -41,5 +40,14 @@ public class PartidaController {
             return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/getPartidaEnCurso")
+    @ResponseBody
+    public ResponseEntity<Partida> getPartidaEnCurso(@RequestParam Long idJugador){
+        var result = partidaService.getPartidaEnCurso(idJugador);
+        if (result != null)
+            return ResponseEntity.ok(result);
+        else
+            return ResponseEntity.notFound().build();
+    }
 
 }

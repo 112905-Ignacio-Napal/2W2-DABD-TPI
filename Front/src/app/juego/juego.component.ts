@@ -9,6 +9,7 @@ import { Carta } from '../interfaces/Carta';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TitleCasePipe } from '@angular/common';
+import { FormatResultadoPipe } from '../pipes/format-resultado.pipe';
 
 @Component({
   selector: 'app-juego',
@@ -25,10 +26,23 @@ export class JuegoComponent implements OnInit {
   constructor(
     private partidaService: PartidaService,
     private router: Router,
-    private titleCase: TitleCasePipe
+    private formatResultado: FormatResultadoPipe
   ) {
     this.jugador = getJugadorFromLocalStorage();
-    this.iniciarPartida();
+    this.iniciarJuego();
+  }
+
+  iniciarJuego() {
+    this.partidaService.getPartidaEnCurso(this.jugador.id).subscribe({
+      next: (partida) => {
+        this.partida = partida;
+        console.log(partida);
+        this.sumarCartasPartida();
+      },
+      error: () => {
+        this.iniciarPartida();
+      },
+    });
   }
 
   iniciarPartida() {
@@ -160,12 +174,11 @@ export class JuegoComponent implements OnInit {
       this.partidaService.plantarse(this.partida.id).subscribe({
         next: (partida) => {
           this.partida = partida;
+          console.log(this.partida);
           this.sumarCartasPartida();
           setTimeout(() => {
             Swal.fire({
-              title: this.titleCase.transform(
-                partida.resultado.split('_').join(' ')
-              ),
+              title: this.formatResultado.transform(partida.resultado),
               icon:
                 partida.resultado === ResultadoEnum.VICTORIA_JUGADOR
                   ? 'success'
