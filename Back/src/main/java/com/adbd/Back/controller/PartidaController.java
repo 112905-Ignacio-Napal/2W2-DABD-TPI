@@ -1,5 +1,7 @@
 package com.adbd.Back.controller;
 
+import com.adbd.Back.dto.CantidadPorDiaDTO;
+import com.adbd.Back.dto.VictoriasCroupierDTO;
 import com.adbd.Back.model.Carta;
 import com.adbd.Back.model.Partida;
 import com.adbd.Back.service.PartidaService;
@@ -8,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.Optional;
 
 @RestController
@@ -44,6 +47,26 @@ public class PartidaController {
     @ResponseBody
     public ResponseEntity<Partida> getPartidaEnCurso(@RequestParam Long idJugador){
         var result = partidaService.getPartidaEnCurso(idJugador);
+        if (result != null)
+            return ResponseEntity.ok(result);
+        else
+            return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/getVictoriasCroupier")
+    @ResponseBody
+    public ResponseEntity<VictoriasCroupierDTO> getVictoriasCroupier(@RequestParam Long idJugador){
+        var result = partidaService.getVictoriasCroupier(idJugador);
+        if (result != null)
+            return ResponseEntity.ok(result);
+        else
+            return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/getCantidadPorDia")
+    @ResponseBody
+    public ResponseEntity<CantidadPorDiaDTO> getCantidadPorDia(@RequestParam Date fecha){
+        var result = partidaService.getCantidadPorDia(fecha);
         if (result != null)
             return ResponseEntity.ok(result);
         else

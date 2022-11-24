@@ -4,6 +4,7 @@ import com.adbd.Back.enums.ResultadoEnum;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -30,4 +31,7 @@ public class Partida {
 
     @Enumerated(EnumType.STRING)
     private ResultadoEnum resultado;
+
+    @Temporal(TemporalType.DATE)
+    private Date fecha;
 }

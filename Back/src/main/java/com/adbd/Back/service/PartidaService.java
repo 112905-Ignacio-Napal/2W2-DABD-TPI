@@ -2,6 +2,8 @@ package com.adbd.Back.service;
 
 import com.adbd.Back.dao.IJugadorDao;
 import com.adbd.Back.dao.IPartidaDao;
+import com.adbd.Back.dto.CantidadPorDiaDTO;
+import com.adbd.Back.dto.VictoriasCroupierDTO;
 import com.adbd.Back.enums.ResultadoEnum;
 import com.adbd.Back.model.Carta;
 import com.adbd.Back.model.Jugador;
@@ -10,9 +12,7 @@ import com.adbd.Back.repository.ICartaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -59,6 +59,7 @@ public class PartidaService {
         if (jugador.isPresent()){
             partida.setJugador(jugador.get());
         }
+        partida.setFecha(new Date());
         partidaDao.save(partida);
         return partida;
     }
@@ -128,5 +129,28 @@ public class PartidaService {
 
     public Partida getPartidaEnCurso(Long idJugador){
         return partidaDao.findTopByJugador_IdOrderByIdDesc(idJugador);
+    }
+
+    public VictoriasCroupierDTO getVictoriasCroupier(Long idJugador) {
+        List<Partida> partidas = partidaDao.findAllByJugador_Id(idJugador);
+        VictoriasCroupierDTO reporte = new VictoriasCroupierDTO();
+        if(!partidas.isEmpty()){
+            int partidasGanadas = 0;
+            for (Partida partida: partidas) {
+                if(partida.getResultado().equals(ResultadoEnum.VICTORIA_CROUPIER)){
+                    partidasGanadas++;
+                }
+            }
+            reporte.setVictorias((long) partidasGanadas);
+            reporte.setPartidasJugadas((long) partidas.size());
+        }
+        return reporte;
+    }
+
+    public CantidadPorDiaDTO getCantidadPorDia(Date fecha) {
+        List<Partida> partidas = partidaDao.findPartidasByFecha(fecha);
+        Set<Jugador> jugadores = new HashSet<>();
+        jugadores.addAll(partidas.stream().map(p -> p.getJugador()).collect(Collectors.toList()));
+        return new CantidadPorDiaDTO((long) partidas.size(), (long) jugadores.size());
     }
 }

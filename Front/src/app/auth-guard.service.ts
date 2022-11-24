@@ -27,8 +27,7 @@ export class AuthGuardService implements CanActivate {
         this.router.navigate(['./juego']);
         return false;
       } else {
-        const ruta = state.url;
-        return ruta === '/juego' ? true : false;
+        return true;
       }
     }
   }

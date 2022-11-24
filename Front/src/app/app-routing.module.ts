@@ -1,3 +1,4 @@
+import { ReportesComponent } from './reportes/reportes.component';
 import { JuegoComponent } from './juego/juego.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -12,6 +13,7 @@ const routes: Routes = [
       { path: '', pathMatch: 'full', redirectTo: 'login' },
       { path: 'login', component: LoginComponent },
       { path: 'juego', component: JuegoComponent },
+      { path: 'reportes', component: ReportesComponent },
       { path: '**', redirectTo: 'login', pathMatch: 'full' },
     ],
   },

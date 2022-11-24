@@ -4,6 +4,10 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment.prod';
 import { Carta } from 'src/app/interfaces/Carta';
 import { Partida } from 'src/app/interfaces/Partida';
+import {
+  CantidadPorDia,
+  VictoriasCroupier,
+} from 'src/app/reportes/reportes.component';
 
 @Injectable({
   providedIn: 'root',
@@ -34,5 +38,16 @@ export class PartidaService {
     return this.http.get(`${this.URL_API}/getPartidaEnCurso`, {
       params: { idJugador: idJugador },
     }) as Observable<Partida>;
+  }
+
+  getVictoriasCroupier(idJugador: number): Observable<VictoriasCroupier> {
+    return this.http.get(`${this.URL_API}/getVictoriasCroupier`, {
+      params: { idJugador: idJugador },
+    }) as Observable<VictoriasCroupier>;
+  }
+  getCantidadPorDia(fecha: string): Observable<CantidadPorDia> {
+    return this.http.get(`${this.URL_API}/getCantidadPorDia`, {
+      params: { fecha: fecha },
+    }) as unknown as Observable<CantidadPorDia>;
   }
 }

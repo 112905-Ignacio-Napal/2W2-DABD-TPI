@@ -9,7 +9,7 @@ import lombok.ToString;
 @Setter
 @AllArgsConstructor
 @ToString
-public class JuegosPorDiaDTO {
+public class CantidadPorDiaDTO {
     private Long cantidadJuegos;
     private Long cantidadJugadores;
 }

@@ -11,6 +11,7 @@ import { JuegoComponent } from './juego/juego.component';
 import { AuthGuardService } from './auth-guard.service';
 import { TitleCasePipe } from '@angular/common';
 import { FormatResultadoPipe } from './pipes/format-resultado.pipe';
+import { ReportesComponent } from './reportes/reportes.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { FormatResultadoPipe } from './pipes/format-resultado.pipe';
     LoginComponent,
     JuegoComponent,
     FormatResultadoPipe,
+    ReportesComponent,
   ],
   imports: [
     BrowserModule,
