@@ -5,12 +5,12 @@ export function getJugadorFromLocalStorage() {
   return jugador ? JSON.parse(jugador) : jugador;
 }
 export function setJugadorOnLocalStorage(jugador: Jugador) {
-  return localStorage.setItem('jugador', JSON.stringify(jugador));
+  localStorage.setItem('jugador', JSON.stringify(jugador));
 }
 export function cerrarSesion() {
-  return localStorage.removeItem('jugador');
+  localStorage.removeItem('jugador');
 }
 
 export function isLoggeado() {
-  return getJugadorFromLocalStorage()? true :false;
+  return getJugadorFromLocalStorage() ? true : false;
 }

@@ -1,14 +1,20 @@
 <div *ngIf="partida.resultado"
     class="h-screen w-screen flex justify-center items-center bg-opacity-75 bg-slate-400 absolute z-10">
-    <div class="text-6xl z-20  m-4 text-center md:m-0 px-16 py-8 rounded-md"
+    <div class="z-20  m-4 text-center md:m-0 px-16 py-8 rounded-md text-white"
         [class]="partida.resultado === 'VICTORIA_JUGADOR'? 'bg-green-400': partida.resultado === 'VICTORIA_CROUPIER'? 'bg-red-500' : 'bg-blue-500'">
-        <h2 class="text-white">{{partida.resultado | formatResultado}}</h2>
+        <h2 class=" text-6xl">{{partida.resultado | formatResultado}}</h2>
+        <p class="font-bold mt-4 text-black">Puntos</p>
+        <p class="text-black font-semibold">Croupier: {{partida.puntosCroupier}}</p>
+        <p class="text-black font-semibold">Jugador: {{partida.puntosJugador}}</p>
     </div>
 </div>
 <div class="bg-green-800 w-full h-full min-h-screen flex flex-col justify-around items-center">
     <div id="botones"
         class="flex gap-4 w-full h-fit place-content-center mt-4 px-4 flex-wrap md:static md:top-auto sticky top-4"
         [class]="partida.resultado && 'z-30'">
+        <button (click)="verReportes()"
+            class="disabled:bg-gray-700 disabled:cursor-not-allowed px-4 py-2 bg-blue-700 rounded-md text-white font-semibold">Ver
+            Reportes</button>
         <button (click)="iniciarPartida()"
             class="disabled:bg-gray-700 disabled:cursor-not-allowed px-4 py-2 bg-red-900 rounded-md text-white font-semibold">Nueva
             Partida</button>

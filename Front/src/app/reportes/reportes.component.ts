@@ -1,17 +1,14 @@
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { PartidaService } from './../services/partida/partida.service';
 import { Component, OnInit } from '@angular/core';
 import { Jugador } from '../interfaces/Jugador';
 import { getJugadorFromLocalStorage } from '../utils/utils';
-
-export type VictoriasCroupier = {
-  partidas: number;
-  victorias: number;
-};
-export type CantidadPorDia = {
-  cantidadPartidas: number;
-  cantidadJugadores: number;
-};
+import {
+  VictoriasCroupier,
+  CantidadPorDia,
+  PromedioBlackjack,
+  ReportesService,
+} from '../services/reportes/reportes.service';
 
 @Component({
   selector: 'app-reportes',
@@ -23,26 +20,42 @@ export class ReportesComponent implements OnInit {
   jugador: Jugador;
   reporteUno: VictoriasCroupier = {} as VictoriasCroupier;
   reporteDos: CantidadPorDia = {} as CantidadPorDia;
-  constructor(private partidaService: PartidaService) {
+  reporteTres: PromedioBlackjack[] = {} as PromedioBlackjack[];
+  constructor(
+    private reportesService: ReportesService,
+    private router: Router
+  ) {
     this.jugador = getJugadorFromLocalStorage();
     this.getVictoriasCroupier();
     this.getCantidadPorDia();
+    this.getPromedioBlackjack();
   }
 
   ngOnInit(): void {}
 
   getVictoriasCroupier() {
     this.sub.add(
-      this.partidaService
+      this.reportesService
         .getVictoriasCroupier(this.jugador.id)
         .subscribe({ next: (reporte) => (this.reporteUno = reporte) })
     );
   }
   getCantidadPorDia() {
     this.sub.add(
-      this.partidaService
-        .getCantidadPorDia('11/24/2022') //Harcodeo momentaneo
+      this.reportesService
+        .getCantidadPorDia('11/24/2022')
         .subscribe({ next: (reporte) => (this.reporteDos = reporte) })
     );
+  }
+  getPromedioBlackjack() {
+    this.sub.add(
+      this.reportesService
+        .getPromedioBlackjack()
+        .subscribe({ next: (reporte) => (this.reporteTres = reporte) })
+    );
+  }
+
+  volver() {
+    this.router.navigate(['./juego']);
   }
 }

@@ -1,6 +1,7 @@
 package com.adbd.Back.controller;
 
 import com.adbd.Back.dto.CantidadPorDiaDTO;
+import com.adbd.Back.dto.PromedioBlackjacksDTO;
 import com.adbd.Back.dto.VictoriasCroupierDTO;
 import com.adbd.Back.model.Carta;
 import com.adbd.Back.model.Partida;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -67,6 +69,16 @@ public class PartidaController {
     @ResponseBody
     public ResponseEntity<CantidadPorDiaDTO> getCantidadPorDia(@RequestParam Date fecha){
         var result = partidaService.getCantidadPorDia(fecha);
+        if (result != null)
+            return ResponseEntity.ok(result);
+        else
+            return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/getPromedioBlackjack")
+    @ResponseBody
+    public ResponseEntity<List<PromedioBlackjacksDTO>> getPromedioBlackjack(){
+        var result = partidaService.getPromedioBlackjack();
         if (result != null)
             return ResponseEntity.ok(result);
         else

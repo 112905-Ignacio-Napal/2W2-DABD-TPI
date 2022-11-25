@@ -36,7 +36,6 @@ export class JuegoComponent implements OnInit {
     this.partidaService.getPartidaEnCurso(this.jugador.id).subscribe({
       next: (partida) => {
         this.partida = partida;
-        console.log(partida);
         this.sumarCartasPartida();
       },
       error: () => {
@@ -169,30 +168,16 @@ export class JuegoComponent implements OnInit {
     });
   }
 
+  verReportes() {
+    this.router.navigate(['./reportes']);
+  }
+
   terminarJugada() {
     this.sub.add(
       this.partidaService.plantarse(this.partida.id).subscribe({
         next: (partida) => {
           this.partida = partida;
-          console.log(this.partida);
           this.sumarCartasPartida();
-          setTimeout(() => {
-            Swal.fire({
-              title: this.formatResultado.transform(partida.resultado),
-              icon:
-                partida.resultado === ResultadoEnum.VICTORIA_JUGADOR
-                  ? 'success'
-                  : partida.resultado === ResultadoEnum.VICTORIA_CROUPIER
-                  ? 'error'
-                  : 'info',
-              html: `<p><b>Puntos</b></p>
-                        <p>Jugador: ${this.sumarCartas(this.jugador.cartas)}</p>
-                        <p>Croupier: ${this.sumarCartas(
-                          this.croupier.cartas
-                        )}</p>`,
-              confirmButtonColor: 'green',
-            });
-          }, 800);
         },
       })
     );
