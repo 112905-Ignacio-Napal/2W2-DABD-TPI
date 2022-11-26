@@ -1,21 +1,22 @@
 <button (click)="volver()"
     class="sticky top-4 m-4 disabled:bg-gray-700 disabled:cursor-not-allowed px-4 py-2 bg-blue-700 rounded-md text-white font-semibold">Volver
     al juego</button>
-
 <div class="flex flex-col h-fit">
     <div class="h-fit flex flex-col items-center">
         <h3 class="text-3xl mb-4"><b>Índice Victorias Croupier</b></h3>
-        <h3 class="text-1xl"><b>Total Partidas:</b> {{reporteUno.partidasJugadas}}</h3>
-        <h3 class="text-1xl"><b>Indice victorias:</b> {{(reporteUno.victorias / reporteUno.partidasJugadas) * 100 |
+        <h4 class="text-1xl"><b>contra Jugador </b> {{jugador.username | titlecase}}</h4>
+        <h4 class="text-1xl"><b>Total Partidas:</b> {{reporteUno.partidasJugadas}}</h4>
+        <h4 class="text-1xl"><b>Indice victorias:</b> {{(reporteUno.victorias / reporteUno.partidasJugadas) * 100 |
             number:
             '1.0-2'}}%
-        </h3>
+        </h4>
         <ngx-charts-pie-chart [results]="reporteUnoData" toot>
         </ngx-charts-pie-chart>
     </div>
+    <hr>
     <div class="h-fit flex flex-col items-center mt-20">
-        <form [formGroup]="formReporte">
-            <label class="text-3xl font-bold"> Cantidad de juegos y jugadores del día
+        <form [formGroup]="formCantidadDia">
+            <label class="text-3xl font-bold"> Cantidad de partidas y jugadores del día
                 <input formControlName="diaCantidad" class="border border-1 border-black rounded-md "
                     [max]="maxFecha | date:'yyyy-MM-dd'" type="date">
             </label>
@@ -28,6 +29,22 @@
         </div>
         <div *ngIf="!reporteDos.cantidadJuegos" class="my-4">
             No hay partidas para el dia seleccionado
+        </div>
+    </div>
+    <hr>
+    <div class="h-fit flex flex-col items-center mt-20">
+        <div class="my-4">
+            <h3 class="text-3xl mb-4"><b>Promedio de jugadas con puntaje 21</b></h3>
+            <h4 class="text-1xl"><b>Total Partidas:</b> {{reporteUno.partidasJugadas}}</h4>
+            <h4 class="text-1xl"><b>Promedio Jugador:</b> {{reporteTres.promedioBlackjacksJugador
+                |number:'1.0-2'}}
+            </h4>
+            <h4 class="text-1xl"><b>Promedio Croupier:</b> {{reporteTres.promedioBlackjacksCroupier
+                |number:'1.0-2'}}
+            </h4>
+            <ngx-charts-bar-vertical [view]="[200,300]" [results]="reporteTresData" [xAxis]="true" [yAxis]="true"
+                [showYAxisLabel]="true" [yAxisLabel]="'Cantidad'">
+            </ngx-charts-bar-vertical>
         </div>
     </div>
 </div>

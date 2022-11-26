@@ -37,9 +37,9 @@ export class ReportesService {
       params: { fecha: fecha },
     }) as unknown as Observable<CantidadPorDia>;
   }
-  getPromedioBlackjack(): Observable<PromedioBlackjack[]> {
-    return this.http.get(
-      `${this.URL_API}/getPromedioBlackjack`
-    ) as unknown as Observable<PromedioBlackjack[]>;
+  getPromedioBlackjack(idJugador: number): Observable<PromedioBlackjack> {
+    return this.http.get(`${this.URL_API}/getPromedioBlackjack`, {
+      params: { idJugador: idJugador },
+    }) as unknown as Observable<PromedioBlackjack>;
   }
 }

@@ -133,12 +133,12 @@ public class PartidaService {
     }
 
     public VictoriasCroupierDTO getVictoriasCroupier(Long idJugador) {
-        List<Partida> partidas = partidaDao.findAllByJugador_Id(idJugador);
+        List<Partida> partidas = partidaDao.findAllByJugador_IdAndResultadoIsNotNull(idJugador);
         VictoriasCroupierDTO reporte = new VictoriasCroupierDTO();
         if(!partidas.isEmpty()){
             int partidasGanadas = 0;
             for (Partida partida: partidas) {
-                if(partida.getResultado().equals(ResultadoEnum.VICTORIA_CROUPIER)){
+                if(ResultadoEnum.VICTORIA_CROUPIER.equals(partida.getResultado())){
                     partidasGanadas++;
                 }
             }
@@ -155,27 +155,18 @@ public class PartidaService {
         return new CantidadPorDiaDTO((long) partidas.size(), (long) jugadores.size());
     }
 
-    public List<PromedioBlackjacksDTO> getPromedioBlackjack() {
-        List<Partida> partidas = partidaDao.findPartidasByResultadoIsNotNull();
+    public PromedioBlackjacksDTO getPromedioBlackjack(Long idJugador) {
+        List<Partida> partidasJugador = partidaDao.findAllByJugador_IdAndResultadoIsNotNull(idJugador);
 
-        List<PromedioBlackjacksDTO> promedios = new ArrayList<>();
-
-       Map<Jugador,List<Partida>> partidasPorJugador = partidas.stream().collect(Collectors.groupingBy(p -> p.getJugador()));
-
-        for (Map.Entry<Jugador,List<Partida>> entry: partidasPorJugador.entrySet()) {
-            String nombreJugador = entry.getKey().getUsername();
-            List<Partida> partidasJugador = entry.getValue();
-            int cantidadBlackjacksJugador = 0;
-            int cantidadBlackjacksCroupier = 0;
-            for (Partida partida: partidasJugador) {
-                Long puntajeJugador = obtenerPuntaje(partida.getId(),true);
-                Long puntajeCroupier = obtenerPuntaje(partida.getId(),false);
-                if(puntajeJugador == 21) cantidadBlackjacksJugador++;
-                if(puntajeCroupier == 21) cantidadBlackjacksCroupier++;
-            }
-            promedios.add(new PromedioBlackjacksDTO(partidasJugador.size(),cantidadBlackjacksJugador,cantidadBlackjacksCroupier,nombreJugador));
+        int cantidadBlackjacksJugador = 0;
+        int cantidadBlackjacksCroupier = 0;
+        for (Partida partida: partidasJugador) {
+            Long puntajeJugador = obtenerPuntaje(partida.getId(),true);
+            Long puntajeCroupier = obtenerPuntaje(partida.getId(),false);
+            if(puntajeJugador == 21) cantidadBlackjacksJugador++;
+            if(puntajeCroupier == 21) cantidadBlackjacksCroupier++;
         }
-        return promedios;
+        return new PromedioBlackjacksDTO(partidasJugador.size(),cantidadBlackjacksJugador,cantidadBlackjacksCroupier, partidasJugador.get(0).getJugador().getUsername());
     }
 
 

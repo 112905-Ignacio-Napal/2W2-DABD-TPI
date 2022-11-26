@@ -11,6 +11,7 @@ import java.util.List;
 public interface IPartidaDao extends JpaRepository<Partida,Long> {
     Partida findTopByJugador_IdOrderByIdDesc(Long idJugador);
     List<Partida> findAllByJugador_Id(Long idJugador);
+    List<Partida> findAllByJugador_IdAndResultadoIsNotNull(Long idJugador);
     List<Partida> findPartidasByFecha(Date fecha);
     List<Partida> findPartidasByResultadoIsNotNull();
 }

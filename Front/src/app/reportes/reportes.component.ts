@@ -10,7 +10,7 @@ import {
   ReportesService,
 } from '../services/reportes/reportes.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { DatePipe } from '@angular/common';
+import { DatePipe, TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-reportes',
@@ -22,26 +22,31 @@ export class ReportesComponent implements OnInit {
   jugador: Jugador;
   reporteUno: VictoriasCroupier = {} as VictoriasCroupier;
   reporteDos: CantidadPorDia = {} as CantidadPorDia;
-  reporteTres: PromedioBlackjack[] = {} as PromedioBlackjack[];
+  reporteTres: PromedioBlackjack = {} as PromedioBlackjack;
   reporteUnoData = [
     { name: 'Jugadas', value: 0 },
     { name: 'Victorias', value: 0 },
   ];
   reporteDosData = [
-    { name: 'Partidas Jugadas', value: 0 },
+    { name: 'Partidas', value: 0 },
     { name: 'Jugadores', value: 0 },
   ];
+  reporteTresData = [
+    { name: 'Croupier', value: 0 },
+    { name: 'Jugador', value: 0 },
+  ];
   maxFecha = new Date();
-  formReporte: FormGroup;
+  formCantidadDia: FormGroup;
 
   constructor(
     private reportesService: ReportesService,
     private router: Router,
     private fb: FormBuilder,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private titleCasePipe: TitleCasePipe
   ) {
     this.jugador = getJugadorFromLocalStorage();
-    this.formReporte = fb.group({
+    this.formCantidadDia = fb.group({
       diaCantidad: datePipe.transform(this.maxFecha, 'yyyy-MM-dd'),
     });
 
@@ -60,7 +65,7 @@ export class ReportesComponent implements OnInit {
   }
 
   public get diaCantidad() {
-    return this.formReporte.get('diaCantidad');
+    return this.formCantidadDia.get('diaCantidad');
   }
 
   ngOnInit(): void {}
@@ -85,7 +90,7 @@ export class ReportesComponent implements OnInit {
         next: (reporte) => {
           this.reporteDos = reporte;
           this.reporteDosData = [
-            { name: 'Partidas Jugadas', value: reporte.cantidadJuegos },
+            { name: 'Partidas', value: reporte.cantidadJuegos },
             { name: 'Jugadores', value: reporte.cantidadJugadores },
           ];
         },
@@ -94,9 +99,21 @@ export class ReportesComponent implements OnInit {
   }
   getPromedioBlackjack() {
     this.sub.add(
-      this.reportesService
-        .getPromedioBlackjack()
-        .subscribe({ next: (reporte) => (this.reporteTres = reporte) })
+      this.reportesService.getPromedioBlackjack(this.jugador.id).subscribe({
+        next: (reporte) => {
+          this.reporteTres = reporte;
+          this.reporteTresData = [
+            {
+              name: 'Croupier',
+              value: this.reporteTres.cantidadBlackJacksCroupier,
+            },
+            {
+              name: this.titleCasePipe.transform(this.jugador.username),
+              value: this.reporteTres.cantidadBlackjacksJugador,
+            },
+          ];
+        },
+      })
     );
   }
 

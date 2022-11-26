@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -77,8 +76,8 @@ public class PartidaController {
 
     @GetMapping("/getPromedioBlackjack")
     @ResponseBody
-    public ResponseEntity<List<PromedioBlackjacksDTO>> getPromedioBlackjack(){
-        var result = partidaService.getPromedioBlackjack();
+    public ResponseEntity<PromedioBlackjacksDTO> getPromedioBlackjack(Long idJugador){
+        var result = partidaService.getPromedioBlackjack(idJugador);
         if (result != null)
             return ResponseEntity.ok(result);
         else
