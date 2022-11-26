@@ -1,27 +1,18 @@
 # Blackjack
+## Integrantes
+112905 Napal Ignacio    
+110845 Picón Risso, José Samuel 
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.1.3.
+## Para ejecutar el proyecto utilizar la branch entrega3:
+1- Usar inserts.sql ubicado en blackjack\Back\DB para crear la base de datos. 
 
-## Development server
+2- Abrir el proyecto ubicado dentro de la carpeta Back. Abrir una terminal y correr el comando mvn spring-boot:run. 
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+3- Abrir el proyecto ubicado dentro de la carpeta Front (con Visual Studio Code para mejor experiencia). En una terminal en la ruta del proyecto, correr el comando npm i. Una vez instaladas todas las dependencias, ejecutar el comando ng serve para levantar el servidor. 
 
-## Code scaffolding
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Link al repositorio: https://github.com/112905-Ignacio-Napal/2W2-DABD-TPI/tree/entrega3
 
-## Build
+Link a las imágenes del proyecto: https://drive.google.com/drive/folders/1lP1rOcr7ZJaMOpDc7qc_WuAFMkSUiaLN?usp=sharing
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Las mismas deben ser copiadas en la ruta /src/assets
