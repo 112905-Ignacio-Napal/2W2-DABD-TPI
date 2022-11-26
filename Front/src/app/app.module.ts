@@ -9,9 +9,10 @@ import { CartaComponent } from './carta/carta.component';
 import { LoginComponent } from './login/login.component';
 import { JuegoComponent } from './juego/juego.component';
 import { AuthGuardService } from './auth-guard.service';
-import { TitleCasePipe } from '@angular/common';
+import { DatePipe, TitleCasePipe } from '@angular/common';
 import { FormatResultadoPipe } from './pipes/format-resultado.pipe';
 import { ReportesComponent } from './reportes/reportes.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
   declarations: [
@@ -28,8 +29,9 @@ import { ReportesComponent } from './reportes/reportes.component';
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    NgxChartsModule,
   ],
-  providers: [AuthGuardService, TitleCasePipe, FormatResultadoPipe],
+  providers: [AuthGuardService, TitleCasePipe, FormatResultadoPipe, DatePipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

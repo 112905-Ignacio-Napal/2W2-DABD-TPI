@@ -9,6 +9,8 @@ import {
   PromedioBlackjack,
   ReportesService,
 } from '../services/reportes/reportes.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-reportes',
@@ -21,30 +23,73 @@ export class ReportesComponent implements OnInit {
   reporteUno: VictoriasCroupier = {} as VictoriasCroupier;
   reporteDos: CantidadPorDia = {} as CantidadPorDia;
   reporteTres: PromedioBlackjack[] = {} as PromedioBlackjack[];
+  reporteUnoData = [
+    { name: 'Jugadas', value: 0 },
+    { name: 'Victorias', value: 0 },
+  ];
+  reporteDosData = [
+    { name: 'Partidas Jugadas', value: 0 },
+    { name: 'Jugadores', value: 0 },
+  ];
+  maxFecha = new Date();
+  formReporte: FormGroup;
+
   constructor(
     private reportesService: ReportesService,
-    private router: Router
+    private router: Router,
+    private fb: FormBuilder,
+    private datePipe: DatePipe
   ) {
     this.jugador = getJugadorFromLocalStorage();
+    this.formReporte = fb.group({
+      diaCantidad: datePipe.transform(this.maxFecha, 'yyyy-MM-dd'),
+    });
+
+    this.diaCantidad?.valueChanges.subscribe((v) => {
+      const date = new Date(v);
+      this.getCantidadPorDia(
+        datePipe.transform(date.toUTCString(), 'yyyy/MM/dd', '-0000')
+      );
+    });
+
     this.getVictoriasCroupier();
-    this.getCantidadPorDia();
+    this.getCantidadPorDia(
+      datePipe.transform(this.maxFecha, 'yyyy/MM/dd', 'es-AR')
+    );
     this.getPromedioBlackjack();
+  }
+
+  public get diaCantidad() {
+    return this.formReporte.get('diaCantidad');
   }
 
   ngOnInit(): void {}
 
   getVictoriasCroupier() {
     this.sub.add(
-      this.reportesService
-        .getVictoriasCroupier(this.jugador.id)
-        .subscribe({ next: (reporte) => (this.reporteUno = reporte) })
+      this.reportesService.getVictoriasCroupier(this.jugador.id).subscribe({
+        next: (reporte) => {
+          this.reporteUno = reporte;
+          const derrotas = reporte.partidasJugadas - reporte.victorias;
+          this.reporteUnoData = [
+            { name: 'Victorias', value: reporte.victorias },
+            { name: 'Derrotas', value: derrotas },
+          ];
+        },
+      })
     );
   }
-  getCantidadPorDia() {
+  getCantidadPorDia(dia: any) {
     this.sub.add(
-      this.reportesService
-        .getCantidadPorDia('11/24/2022')
-        .subscribe({ next: (reporte) => (this.reporteDos = reporte) })
+      this.reportesService.getCantidadPorDia(dia).subscribe({
+        next: (reporte) => {
+          this.reporteDos = reporte;
+          this.reporteDosData = [
+            { name: 'Partidas Jugadas', value: reporte.cantidadJuegos },
+            { name: 'Jugadores', value: reporte.cantidadJugadores },
+          ];
+        },
+      })
     );
   }
   getPromedioBlackjack() {

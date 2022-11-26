@@ -4,11 +4,11 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment.prod';
 
 export type VictoriasCroupier = {
-  partidas: number;
+  partidasJugadas: number;
   victorias: number;
 };
 export type CantidadPorDia = {
-  cantidadPartidas: number;
+  cantidadJuegos: number;
   cantidadJugadores: number;
 };
 export type PromedioBlackjack = {
